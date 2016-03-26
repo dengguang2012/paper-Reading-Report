@@ -65,7 +65,7 @@ Non-scalable locks are dangerous 阅读报告
 图显示了所有基准的结果。人们可能会期望总吞吐量在一段时间内与内核的数量成比例上升，然后再由于一些序列部分瓶颈持平。吞吐量随多个内核的增加而增加，
 然而在一定数量内核之后突然降低，N个内核的性能在一到两个更多地内核的时候却更好。
 
-<img src="https://github.com/dengguang2012/paper-Reading-Report/illustraction/2.jpg" style="width: 50%; height: 50%"/>​
+<img src="https://github.com/dengguang2012/paper-Reading-Report/blob/master/illustraction/2.jpg" style="width: 50%; height: 50%"/>​
 
 ###模型
 
@@ -96,7 +96,7 @@ Non-scalable locks are dangerous 阅读报告
 作者使用队列理论把ticket lock建模为一个markov链。链中不同的状态表示不同熟练的核排队等待一个锁，模型中一共n+1个状态，表明我们的系统有固定数量的内核(n)
 
 
-<img src="https://github.com/dengguang2012/paper-Reading-Report/illustraction/3.jpg" style="width: 50%; height: 50%"/>​
+<img src="https://github.com/dengguang2012/paper-Reading-Report/blob/master/illustraction/3.jpg" style="width: 50%; height: 50%"/>​
 
 不同状态之间到达和服务概率表示锁的获取和释放。每一对状态这些概率是不同的，对ticket lock的非扩展性能和系统关闭的事实进行建模。特别地，到达概率从k到k+1等待，a_k应该是保留核（已经不在等待锁）数量的某个比例。
 相反，服务概率从k+1到k，s_k应该与k成反比，反映的事实是传递对ticket lock的控制到下一个核花费等待数量线性时间。
@@ -110,7 +110,7 @@ Non-scalable locks are dangerous 阅读报告
 	
 	P_k∙a_k=P_(k+1)∙s_k，则P_k=P_0∙n!/(a^k (n-k)!)∙
 
-<img src="https://github.com/dengguang2012/paper-Reading-Report/illustraction/0.JPG" style="width: 50%; height: 50%"/>​
+<img src="https://github.com/dengguang2012/paper-Reading-Report/blob/master/illustraction/0.jpg" style="width: 50%; height: 50%"/>​
 
 为锁冲突核的每个数量给出稳定状态的概率，可以按照期待分布数值计算等待核的平均数量，加速达到锁的存在和序列化区域会计算为n-w，因为平均下来许多核在做有用的工作而w核在自旋。
 
@@ -119,5 +119,5 @@ Non-scalable locks are dangerous 阅读报告
 为了验证模型，图8和图9显示用单一锁的microbenchmark预测和实际加速，花费固定数量的周期数而不是在一序列由锁保护的区域。图8显示了预测和实际的加速时的串行部分总是需要400个周期来执行，
 而非串行部分的从12.5K 200K周期范围变化。正如我们所看到的，与所有配置的模型密切匹配实际硬件加速。
 
-<img src="https://github.com/dengguang2012/paper-Reading-Report/illustraction/1.JPG" style="width: 50%; height: 50%"/>​
+<img src="https://github.com/dengguang2012/paper-Reading-Report/blob/master/illustraction/1.JPG" style="width: 50%; height: 50%"/>​
 
