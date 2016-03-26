@@ -2,7 +2,7 @@
 layout: post
 title: fastsocket
 categories:
-- life
+- paper
 tags:
 - technology
 - 
@@ -58,7 +58,7 @@ fastsocket遵循这一理念，被大量部署在新浪微博的生产环境。
 
 ###fast socket设计方案
 
-<img src="https://github.com/dengguang2012/paper-Reading-Report/tree/master/illustraction/4.jpg" style="width: 50%; height: 50%"/>​
+<img src="https://github.com/dengguang2012/paper-Reading-Report/blob/master/illustraction/4.jpg" style="width: 50%; height: 50%"/>​
 
 fastsocket由三部分组成，TCB数据结构分区（局部听表和局部建立表），接收流传递（RFD），和fastsocket aware VFS。
 三模块合作提供每个核心流程中的所有活动区域，对于一个给定的连接，从网卡中断到访问的应用程序，由一个交叉核同步，单CPU核执行。
@@ -69,7 +69,7 @@ fastsocket完全分配TCB表的数据结构管理。因此，当net_RX softirq�
 这样，fastsocket达到最大局部连接和尽量减少CPU缓存超出。3。内核虚拟文件系统层的Socket API的抽象性和兼容性是关键。
 fastsocket-aware绕过不必要的密集锁VFS 的例程，使用特殊scoket快速通道而不用消除可扩展性
 
-<img src="https://github.com/dengguang2012/paper-Reading-Report/tree/master/illustraction/5.jpg" style="width: 50%; height: 50%"/>​
+<img src="https://github.com/dengguang2012/paper-Reading-Report/blob/master/illustraction/5.jpg" style="width: 50%; height: 50%"/>​
 
 作者使用局部侦听表和局部建立表实现表级别的分区侦听sockets并且建立了sockets管理。局部侦听在启动时，
 服务器应用程序的第一个过程通常listen()在一个特定的TCP端口等待客户端请求。内核相应地创建一个侦听套接字全局侦听表。
@@ -101,5 +101,5 @@ fastsocketa-ware VFS只保留必要的状态和dentry和inode功能支持/proc�
 
 在一个8核的服务器上面测试fastscoket,运行HaProxy作为负载均衡，相比基本的linux性能提升很大。
 
-<img src="https://github.com/dengguang2012/paper-Reading-Report/tree/master/illustraction/6.jpg" style="width: 50%; height: 50%"/>​
+<img src="https://github.com/dengguang2012/paper-Reading-Report/blob/master/illustraction/6.jpg" style="width: 50%; height: 50%"/>​
 
