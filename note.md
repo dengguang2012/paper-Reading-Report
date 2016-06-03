@@ -44,3 +44,12 @@ Dalal提出的Hog特征提取的过程：把样本图像分割为若干个像素
 这样就可以对每个feature形成一个4*4*8=128维的描述子，每一维都可以表示4*4个格子中一个的scale/orientation. 
 将这个向量归一化之后，就进一步去除了光照的影响。
 
+ubuntu下面配置shadowsocks
+
+通过PPA源安装，仅支持Ubuntu 14.04或更高版本。
+
+	sudo add-apt-repository ppa:hzwhuang/ss-qt5
+	sudo apt-get update
+	sudo apt-get install shadowsocks-qt5
+
+	
