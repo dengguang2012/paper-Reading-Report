@@ -69,9 +69,11 @@ void idt_init() 将alltraps函数地址设置为中断发生时的跳转地址�
 
 在启动页表机制之后，页表的虚拟地址不再是0x00000000向上的部分而是0xC0000000向上的部分，所以加上KERNBASE，即0xC0000000，在完成过渡之后，所有的指令地址都处于0xC0000000向上，此时0x00000000和0xC0000000映射到相同的物理内存已经不需要了，在页机制算法初始化时函数指针也是0x00000000向上的部分，重新植入函数指针将函数指针指向到0xC0000000向上的部分，在页表的管理头里的指针都是0x00000000为基址时的状态，在页机制启动后，其中的指针值并不会随之改变，要遍历一次进行更新
 
+测试结果：该实验实现了时钟，中断和物理内存管理。
+
 <img src="https://github.com/dengguang2012/paper-Reading-Report/blob/master/illustraction/lab1.png" style="width: 50%; height: 50%"/>​
 
-该实验实现了时钟，中断和物理内存管理。
+
 
 ###Lab3
 
@@ -106,6 +108,7 @@ int pgfault_handler(struct trapframe *tf) {
     
 ```
 
+测试结果：
 
 <img src="https://github.com/dengguang2012/paper-Reading-Report/blob/master/illustraction/lab1.png" style="width: 50%; height: 50%"/>​
 
@@ -133,6 +136,7 @@ load_icode(unsigned char *binary, size_t bsize)
 
   
 
+测试结果：
 
 <img src="https://github.com/dengguang2012/paper-Reading-Report/blob/master/illustraction/lab4-51.png" style="width: 50%; height: 50%"/>​
 
@@ -162,6 +166,8 @@ load_icode(unsigned char *binary, size_t bsize)
 
 	void schedule(void) 
 
+测试结果：
+
 <img src="https://github.com/dengguang2012/paper-Reading-Report/blob/master/illustraction/lab6.png" style="width: 50%; height: 50%"/>​
 
 ###lab7
@@ -188,6 +194,7 @@ load_icode(unsigned char *binary, size_t bsize)
 	void
 	run_timer_list(void) {
 
+测试结果：
 
 <img src="https://github.com/dengguang2012/paper-Reading-Report/blob/master/illustraction/lab7.png" style="width: 50%; height: 50%"/>​
 
@@ -201,6 +208,8 @@ struct {
  uint entry //程序的执行入口地址
  uint flags;//程序的数据段起始地址 
 } hdr;
+
+测试结果：
 
 <img src="https://github.com/dengguang2012/paper-Reading-Report/blob/master/illustraction/lab8.png" style="width: 50%; height: 50%"/>​
 
