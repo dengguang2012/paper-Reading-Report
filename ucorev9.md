@@ -83,41 +83,16 @@ void idt_init() 将alltraps函数地址设置为中断发生时的跳转地址�
 static char disk[1 * 1024 * 8 * 512];	//在bss段中开出空间构建一块虚拟磁盘作为交换分区
 
 void
-ide_init(void) {
-  memset(disk, sizeof(disk), 0);		//磁盘初始化即是将bss段中的虚拟磁盘区域清空
-}
+ide_init(void)
 
 size_t
-ide_device_size(unsigned short ideno) {
-  return 1 * 1024 * 8;
-}
+ide_device_size(unsigned short ideno) 
 
 int										//从磁盘中读则是直接从虚拟磁盘中将内容拷贝进目标地址dst中
-ide_read_secs(unsigned short ideno, uint32_t secno, void *dst, size_t nsecs) {
-  int ret = 0;
-  int i;
-  secno = secno * SECTSIZE;
-  for (; nsecs > 0; nsecs--, dst += SECTSIZE, secno += SECTSIZE) {
-    for (i = 0; i < SECTSIZE; i++) {
-      *((char *)(dst) + i) = disk[secno + i];
-    }
-  }
-  return ret;
-}
+ide_read_secs(unsigned short ideno, uint32_t secno, void *dst, size_t nsecs) 
 
 int										//往磁盘中写则是直接从来源地址src中向虚拟磁盘中拷贝内容
-ide_write_secs(unsigned short ideno, uint32_t secno, uint32_t *src, size_t nsecs) {
-  int ret = 0;
-  int i;
-  secno = secno * SECTSIZE;
-  for (; nsecs > 0; nsecs--, src += SECTSIZE, secno += SECTSIZE) {
-    for (i = 0; i < SECTSIZE; i++) {
-      disk[secno + i] = *((char *)(src) + i);
-    }
-  }
-  return ret;
-}
-
+ide_write_secs(unsigned short ideno, uint32_t secno, uint32_t *src, size_t nsecs)
 ```
 
 ####*	页缺失
