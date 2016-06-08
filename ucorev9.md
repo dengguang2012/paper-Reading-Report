@@ -23,6 +23,10 @@ swieros是v9-CPU的原型，作者设计了一个兼具RISC和SISC特性的指�
 
 为了完成物理内存管理，以固定页面大小来划分整个物理内存空间，并准备以此为最小内存分配单位来管理整个物理内存，管理在内核运行过程中每页内存，设定其可用状态（free的，used的，还是reserved的），这其实就是连续内存分配概念和原理的具体实现；接着ucore kernel就要建立页表， 启动分页机制，让CPU的MMU把预先建立好的页表中的页表项读入到TLB中，根据页表项描述的虚拟页（Page）与物理页帧（Page Frame）的对应关系完成CPU对内存的读、写和执行操作。这一部分其实就对应了内存映射、页表、多级页表等概念和原理。
 
+####程序调用关系
+
+<img src="https://github.com/dengguang2012/paper-Reading-Report/blob/master/illustraction/34.png" style="width: 50%; height: 50%"/>​
+
 init_pmm_manager(void) 初始化物理内存页管理器框架pmm_manager；alloc_pages(size_t n) 分配页面内存，free_pages(struct Page *base, size_t n) 释放连续页面的物理内存，
 建立空闲的page链表，这样就可以分配以页（4KB）为单位的空闲内存了；
 检查物理内存页分配算法；
@@ -69,6 +73,8 @@ void idt_init() 将alltraps函数地址设置为中断发生时的跳转地址�
 
 在启动页表机制之后，页表的虚拟地址不再是0x00000000向上的部分而是0xC0000000向上的部分，所以加上KERNBASE，即0xC0000000，在完成过渡之后，所有的指令地址都处于0xC0000000向上，此时0x00000000和0xC0000000映射到相同的物理内存已经不需要了，在页机制算法初始化时函数指针也是0x00000000向上的部分，重新植入函数指针将函数指针指向到0xC0000000向上的部分，在页表的管理头里的指针都是0x00000000为基址时的状态，在页机制启动后，其中的指针值并不会随之改变，要遍历一次进行更新
 
+
+
 测试结果：该实验实现了时钟，中断和物理内存管理。
 
 <img src="https://github.com/dengguang2012/paper-Reading-Report/blob/master/illustraction/lab1.png" style="width: 50%; height: 50%"/>​
@@ -80,6 +86,11 @@ void idt_init() 将alltraps函数地址设置为中断发生时的跳转地址�
 磁盘构建
 
 *	v9底层是没有成熟的磁盘接口的，所以在这里我们在内存中开出了一块空间来构建了一块虚拟磁盘。
+
+####程序调用关系
+
+<img src="https://github.com/dengguang2012/paper-Reading-Report/blob/master/illustraction/35.png" style="width: 50%; height: 50%"/>​
+
 
 ```
 static char disk[1 * 1024 * 8 * 512];	//在bss段中开出空间构建一块虚拟磁盘作为交换分区
@@ -123,6 +134,10 @@ Lab4-Lab5分别启动了内核线程和用户进程。进程管理包含进程�
 
 在进程管理方面，主要涉及到的是进程控制块中与内存管理相关的部分，包括建立进程的页表和维护进程可访问空间（可能还没有建立虚实映射关系）的信息；加载一个ELF格式的程序到进程控制块管理的内存中的方法；在进程复制（fork）过程中，把父进程的内存空间拷贝到子进程内存空间的技术。另外一部分与用户态进程生命周期管理相关，包括让进程放弃CPU而睡眠等待某事件；让父进程等待子进程结束；一个进程杀死另一个进程；给进程发消息；建立进程的血缘关系链表。
 
+####程序调用关系
+
+<img src="https://github.com/dengguang2012/paper-Reading-Report/blob/master/illustraction/36.png" style="width: 50%; height: 50%"/>​
+
 void switch_to(struct context *oldc, struct context *newc) 切换用户态和核心态的协议栈
 
 
@@ -152,6 +167,10 @@ load_icode(unsigned char *binary, size_t bsize)
 
 实验6实现了进程之间的调度  实现时候主要是在schedule文件夹中，使用队列来存储进程的handle，用时间片进行调度
 
+####程序调用关系
+
+<img src="https://github.com/dengguang2012/paper-Reading-Report/blob/master/illustraction/37.png" style="width: 50%; height: 50%"/>​
+
 	void sched_class_enqueue(struct proc_struct *proc) 
 
 	void sched_class_dequeue(struct proc_struct *proc) 
@@ -171,6 +190,11 @@ load_icode(unsigned char *binary, size_t bsize)
 <img src="https://github.com/dengguang2012/paper-Reading-Report/blob/master/illustraction/lab6.png" style="width: 50%; height: 50%"/>​
 
 ###lab7
+
+####程序调用关系
+
+<img src="https://github.com/dengguang2012/paper-Reading-Report/blob/master/illustraction/38.png" style="width: 50%; height: 50%"/>​
+
 
 在时钟片列表中添加定时器
 
@@ -201,6 +225,9 @@ load_icode(unsigned char *binary, size_t bsize)
 ###Lab8
 Lab8加入了文件系统，主要实现实在fs文件夹下面，其中fsstruct.h中存储了文件系统中的数据结构，如盘符大小secSize,inode的内存内部复制，dinode存储了磁盘上的inode数据结构，direct是一个存储一系列直接数据结构的目录。console.h可以用console端口与用户交互，而在fs.h中存储了binit()函数创建缓冲区链接列表，fs_init存储了初始化的文件存储,bread函数，brelease函数，ilock函数，iget函数，bwrite函数，balloc函数来实现文件系统。
 
+####程序调用关系
+
+<img src="https://github.com/dengguang2012/paper-Reading-Report/blob/master/illustraction/39.png" style="width: 50%; height: 50%"/>​
 
 struct { 
  uint magic //0xC0DEF00D 文件的magic number 
