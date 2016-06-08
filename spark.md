@@ -137,7 +137,7 @@ Class shipping: 让worker节点拉取每行语句对应类的字节码，让解�
 Modified code generation: 正常情况下，每行语句创建的单例对象通过其对应类的静态方法进行访问。这意味着如果要序列化一个闭包时，它引用了前面行中定义的变量，如上例中的Line1.x，Java不会通过对象图追溯来传输具有x的Line1实例。因此worker节点不会收到x。我们修改代码生成逻辑来直接引用每行对象的实例。
 下图说明了Spark解释器如何将用户输入的两行代码转换为Java对象。
 
-<img src="https://github.com/dengguang2012/paper-Reading-Report/blob/master/illustraction/35.png" style="width: 50%; height: 50%"/>​
+<img src="https://github.com/dengguang2012/paper-Reading-Report/blob/master/illustraction/332.png" style="width: 50%; height: 50%"/>​
 
 对于其中的内存管理，Spark提供三种可选的RDD持久化存储策略：(1)以反序列化的Java对象形式存储在内存中；(2)以序列化的数据存储在内存中；(3)存储在磁盘上。第一种提供最快的读取性能，因为Java虚拟机可以原生地访问每个RDD元素。第二种让用户在空间受限的时候，以损失较低性能的代价，选择比Java对象图更加存储高效的表示。第三种适用于RDD太大而无法维持在内存中，但每次使用重新计算代价又非常大的情况。为了管理有限可用的内存，在RDDs的级别使用LRU淘汰策略。当计算出一个新RDD分区却没有足够的空间存储它时，淘汰最近最少访问RDD的一个分区。这样就保持旧的分区在内存中以防止来自同一个RDD的分区循环的进出内存。其中重要性在于大多数操作都是在整个RDD上运行任务，因此已经在内存中的分区很可能将来还会被用到。
 
