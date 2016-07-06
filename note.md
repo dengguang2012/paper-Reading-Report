@@ -85,3 +85,12 @@ SSH的服务端口，默认端口是22，此时就可以使用putty远程登录u
  
  自我服务偏见 虚伪的谦逊和自我妨碍 揭示出个体十分在意自我形象。在不同程度上，我们始终在管理自己给他人因遭的形象。我们总是向着周围的观众表演
  
+ windows 下面 python 下面pip使用 安装
+ 
+ 下载 https://bootstrap.pypa.io/get-pip.py
+ 
+ 运行 get-pip.py
+ 
+ 关键是安装以后记得加环境变量 C:\Python27;C:\Python27\Scripts
+ 
+ C:\Python27\Scripts 中有pip.exe
