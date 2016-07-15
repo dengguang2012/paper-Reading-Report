@@ -94,3 +94,25 @@ SSH的服务端口，默认端口是22，此时就可以使用putty远程登录u
  关键是安装以后记得加环境变量 C:\Python27;C:\Python27\Scripts
  
  C:\Python27\Scripts 中有pip.exe
+ 
+  
+ ### windows 远程访问windows
+ 
+ 远程桌面连接
+IP 用户名 密码
+
+### python下面连接使用 mysql 
+
+下载MySQL_python-1.2.5-cp27-none-win_amd64.whl
+
+使用pip install pymysql 安装
+
+连接pymysql
+
+	import pymysql
+	conn = pymysql.connect(host='localhost', port=3306,user='××××',passwd='×××',db='××××',charset='UTF8')
+	cur = conn.cursor()
+	cur.execute("INSERT INTO `test`(`testPri`, `name`, `birthData`, `sex`)  VALUES (1,'dengzhihui', '1993-12-05', 'm')")
+	conn.commit()
+	cur.close()
+	conn.close()
